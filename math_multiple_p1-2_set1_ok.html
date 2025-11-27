@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vertical Multiplication · Kru Pai Classroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: #ffffff;
+      color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .app {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      border-radius: 16px;
+      padding: 24px 20px 28px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      border: 1px solid #f1f1f1;
+      background: #fff;
+    }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.8rem;
+      color: #e53935;
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 18px;
+    }
+    .kp-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid #ffcdd2;
+      background: #ffebee;
+      color: #c62828;
+      font-size: 0.8rem;
+      margin-bottom: 16px;
+    }
+    .kp-badge span.logo {
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 2px 6px;
+      background: #ffffff;
+      border: 1px solid #ffcdd2;
+    }
+
+    .hidden { display: none; }
+
+    /* PLAYER BAR */
+    .player-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 12px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .player-name-label {
+      font-weight: 600;
+      color: #c62828;
+    }
+    .btn-ghost {
+      border-radius: 999px;
+      border: 1px solid #ddd;
+      background: transparent;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #666;
+      transition: all 0.15s ease;
+    }
+    .btn-ghost:hover { background: #f5f5f5; }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: #e53935;
+      color: #fff;
+      border: none;
+    }
+    .btn-primary:hover { background: #d32f2f; }
+    .btn-outline {
+      background: #ffffff;
+      color: #e53935;
+      border: 1px solid #ffcdd2;
+    }
+    .btn-outline:hover { background: #ffebee; }
+
+    .small-note {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    /* NAME VIEW */
+    #nameView h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #e53935;
+    }
+    .name-form {
+      max-width: 360px;
+      margin: 0 auto 8px;
+      text-align: center;
+    }
+    .name-form label {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .name-form input {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid #e0e0e0;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .name-form input:focus {
+      border-color: #ef5350;
+      box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.16);
+    }
+
+    /* SET SELECT (CHECKLIST OVERVIEW) */
+    #setSelectView h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #e53935;
+    }
+    .progress-box {
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #fafafa;
+      border: 1px dashed #ef9a9a;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .set-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+    .set-card {
+      border-radius: 14px;
+      padding: 10px 10px;
+      border: 1px solid #ffcdd2;
+      background: #fff5f5;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .set-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(229, 57, 53, 0.18);
+      border-color: #ef5350;
+    }
+    .set-title {
+      font-weight: 700;
+      color: #c62828;
+      font-size: 1rem;
+    }
+    .set-detail {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .set-status {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .set-status.success {
+      color: #2e7d32;
+    }
+    .set-status.in-progress {
+      color: #f57c00;
+    }
+    .set-status.not-started {
+      color: #757575;
+    }
+
+    /* SET DETAIL VIEW */
+    #setDetailView h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 6px;
+      color: #e53935;
+    }
+    .back-row {
+      display: flex;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
+    #currentSetLabel {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .page-score-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .page-score-box {
+      min-width: 70px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      border: 1px solid #ffcdd2;
+      background: #fffafa;
+      font-size: 0.8rem;
+      text-align: center;
+      color: #c62828;
+    }
+    .page-score-box.active {
+      background: #e53935;
+      color: #fff;
+      border-color: #e53935;
+      font-weight: 700;
+    }
+    .page-score-box.fullscore {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border-color: #66bb6a;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .page-card {
+      border-radius: 12px;
+      border: 1px solid #ffcdd2;
+      background: #ffffff;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .page-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #c62828;
+    }
+    .page-info-text {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .page-btn {
+      margin-top: 4px;
+      align-self: flex-start;
+      padding: 4px 10px;
+      font-size: 0.85rem;
+    }
+
+    /* GAME VIEW */
+    #gameView h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 4px;
+      color: #e53935;
+    }
+    #currentGameLabel {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .question-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .question-card {
+      border-radius: 12px;
+      border: 1px solid #f1f1f1;
+      background: #fafafa;
+      padding: 10px 8px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .q-number {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 0.8rem;
+      color: #888;
+      font-weight: 600;
+    }
+
+    .vert-box {
+      margin-top: 10px;
+      display: inline-grid;
+      grid-template-columns: auto 38px 38px 38px;
+      grid-auto-rows: 38px;
+      gap: 2px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cell-blank {
+      text-align: center;
+      line-height: 38px;
+      font-size: 1rem;
+    }
+
+    .digit-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #ffffff;
+    }
+
+    .digit-box.multiplier {
+      background: #ffeef0;
+      border-color: #ffcdd2;
+      color: #c62828;
+    }
+
+    .x-sign {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .hline {
+      grid-column: 2 / 5;
+      height: 1px;
+      border-bottom: 2px solid #e0e0e0;
+      margin-top: 4px;
+      margin-bottom: 2px;
+    }
+
+    .answer-input {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 600;
+      outline: none;
+    }
+    .answer-input:focus {
+      border-color: #ef5350;
+      box-shadow: 0 0 0 2px rgba(239, 83, 80, 0.16);
+    }
+
+    .result-icon {
+      margin-top: 4px;
+      font-size: 1.1rem;
+      min-height: 1.2em;
+    }
+    .result-icon.correct { color: #2e7d32; }
+    .result-icon.wrong { color: #c62828; }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .score-row {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #333;
+    }
+    .message {
+      text-align: center;
+      font-size: 0.9rem;
+      min-height: 1.2em;
+    }
+    .message.success { color: #2e7d32; }
+    .message.error { color: #c62828; }
+
+    .footer-note {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      text-align: center;
+      color: #888;
+    }
+
+    @media (max-width: 600px) {
+      .app { padding: 18px 14px 22px; }
+      h1 { font-size: 1.4rem; }
+      .vert-box {
+        transform: scale(0.95);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <h1>Vertical Multiplication</h1>
+    <div class="subtitle">2-digit × 1-digit · 6 Sets · Kru Pai Classroom</div>
+    <div class="kp-badge">
+      <span class="logo">KP</span> Times Practice · No-carry Style
+    </div>
+
+    <!-- PLAYER BAR -->
+    <div class="player-bar hidden" id="playerBar">
+      <div>Player: <span class="player-name-label" id="playerNameDisplay">-</span></div>
+      <button class="btn-ghost" id="changeNameBtn">Change name</button>
+    </div>
+
+    <!-- VIEW: ENTER NAME -->
+    <div id="nameView">
+      <h2>Enter your nickname</h2>
+      <div class="name-form">
+        <label for="playerNameInput">Nickname</label>
+        <input id="playerNameInput" type="text" placeholder="e.g. Ploy, Boss, Mint" />
+        <button class="btn-primary" id="startWithNameBtn">Start</button>
+      </div>
+      <div class="small-note">
+        Your nickname will appear on the checklist and score screens 😊
+      </div>
+    </div>
+
+    <!-- VIEW: SET SELECT / CHECKLIST OVERVIEW -->
+    <div id="setSelectView" class="hidden">
+      <h2>Set Checklist</h2>
+      <div class="progress-box" id="overallSummary">
+        See how many sets you have finished ✨
+      </div>
+      <div class="set-grid" id="setGrid">
+        <!-- set cards by JS -->
+      </div>
+      <div class="small-note">
+        Each set has 20 questions (5 pages × 4 questions). Try to get “Success!” in all 6 sets 💪
+      </div>
+    </div>
+
+    <!-- VIEW: ONE SET DETAIL -->
+    <div id="setDetailView" class="hidden">
+      <div class="back-row">
+        <button class="btn-ghost" id="backToOverviewBtn">&larr; Back to all sets</button>
+      </div>
+      <h2 id="setTitle">Set 1</h2>
+      <div id="currentSetLabel"></div>
+      <div class="page-score-row" id="detailScoreRow"></div>
+      <div class="progress-box" id="setMessageBox"></div>
+
+      <div class="page-grid" id="pageGrid">
+        <!-- Page cards -->
+      </div>
+    </div>
+
+    <!-- VIEW: GAME PAGE -->
+    <div id="gameView" class="hidden">
+      <div class="back-row">
+        <button class="btn-ghost" id="backToSetBtn">&larr; Back to set checklist</button>
+      </div>
+      <h2 id="gameTitle">Set 1 · Page 1</h2>
+      <div id="currentGameLabel"></div>
+
+      <!-- top score bar for 5 pages of this set -->
+      <div class="page-score-row" id="gameScoreRow"></div>
+
+      <div class="question-grid" id="questionGrid"></div>
+
+      <div class="controls">
+        <button class="btn-primary" id="checkBtn">Check answers</button>
+        <button class="btn-outline" id="clearBtn">Clear this page</button>
+        <button class="btn-outline" id="nextPageBtn">Next page ➜</button>
+      </div>
+
+      <div class="score-row" id="scoreRow">Score: – / 4</div>
+      <div class="message" id="messageBox"></div>
+
+      <div class="footer-note">
+        4 questions per page · Your best score for this page is saved automatically 💾
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- CONFIG ----------
+    const SET_COUNT = 6;
+    const PAGES_PER_SET = 5;
+    const QUESTIONS_PER_PAGE = 4;
+
+    const PLAYER_NAME_KEY = "kp_vertmul_player_name_v1";
+    const SCORE_PREFIX = "kp_vertmul_score_v1_"; // + set_page  e.g. kp_vertmul_score_v1_0_2
+
+    // ---------- DOM ----------
+    const playerBar = document.getElementById("playerBar");
+    const playerNameDisplay = document.getElementById("playerNameDisplay");
+    const playerNameInput = document.getElementById("playerNameInput");
+    const startWithNameBtn = document.getElementById("startWithNameBtn");
+    const changeNameBtn = document.getElementById("changeNameBtn");
+
+    const nameView = document.getElementById("nameView");
+    const setSelectView = document.getElementById("setSelectView");
+    const setDetailView = document.getElementById("setDetailView");
+    const gameView = document.getElementById("gameView");
+
+    const overallSummary = document.getElementById("overallSummary");
+    const setGrid = document.getElementById("setGrid");
+
+    const setTitle = document.getElementById("setTitle");
+    const currentSetLabel = document.getElementById("currentSetLabel");
+    const detailScoreRow = document.getElementById("detailScoreRow");
+    const setMessageBox = document.getElementById("setMessageBox");
+    const pageGrid = document.getElementById("pageGrid");
+    const backToOverviewBtn = document.getElementById("backToOverviewBtn");
+
+    const backToSetBtn = document.getElementById("backToSetBtn");
+    const gameTitle = document.getElementById("gameTitle");
+    const currentGameLabel = document.getElementById("currentGameLabel");
+    const gameScoreRow = document.getElementById("gameScoreRow");
+    const questionGrid = document.getElementById("questionGrid");
+    const checkBtn = document.getElementById("checkBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const nextPageBtn = document.getElementById("nextPageBtn");
+    const scoreRow = document.getElementById("scoreRow");
+    const messageBox = document.getElementById("messageBox");
+
+    // ---------- STATE ----------
+    let currentSetIndex = null;   // 0–5
+    let currentPageIndex = null;  // 0–4
+
+    // Generate all questions once per load
+    const ALL_SETS = generateAllSets();
+
+    // ---------- LOCAL STORAGE HELPERS ----------
+    function loadPlayerName() {
+      const name = localStorage.getItem(PLAYER_NAME_KEY);
+      return name && name.trim() !== "" ? name : null;
+    }
+
+    function savePlayerName(name) {
+      localStorage.setItem(PLAYER_NAME_KEY, name);
+      playerNameDisplay.textContent = name;
+    }
+
+    function scoreKey(setIndex, pageIndex) {
+      return SCORE_PREFIX + setIndex + "_" + pageIndex;
+    }
+
+    function getPageScore(setIndex, pageIndex) {
+      const val = localStorage.getItem(scoreKey(setIndex, pageIndex));
+      return val ? Number(val) : 0;
+    }
+
+    function setPageScore(setIndex, pageIndex, score) {
+      const key = scoreKey(setIndex, pageIndex);
+      const current = getPageScore(setIndex, pageIndex);
+      if (score > current) {
+        localStorage.setItem(key, String(score));
+      }
+    }
+
+    function getSetTotalScore(setIndex) {
+      let total = 0;
+      for (let p = 0; p < PAGES_PER_SET; p++) {
+        total += getPageScore(setIndex, p);
+      }
+      return total;
+    }
+
+    function getCompletedPagesCount(setIndex) {
+      let count = 0;
+      for (let p = 0; p < PAGES_PER_SET; p++) {
+        if (getPageScore(setIndex, p) === QUESTIONS_PER_PAGE) count++;
+      }
+      return count;
+    }
+
+    // ---------- QUESTION GENERATION ----------
+    function generateSingleQuestion() {
+      let a, b;
+      while (true) {
+        a = Math.floor(Math.random() * 90) + 10; // 10–99
+        b = Math.floor(Math.random() * 8) + 2;   // 2–9
+        const ones = (a % 10) * b;
+        if (ones <= 9) break; // no carry from ones
+      }
+      return { a, b, product: a * b };
+    }
+
+    function generateAllSets() {
+      const sets = [];
+      for (let s = 0; s < SET_COUNT; s++) {
+        const questions = [];
+        const used = new Set();
+        while (questions.length < PAGES_PER_SET * QUESTIONS_PER_PAGE) {
+          const q = generateSingleQuestion();
+          const key = q.a + "x" + q.b;
+          if (used.has(key)) continue;
+          used.add(key);
+          questions.push(q);
+        }
+        sets.push(questions);
+      }
+      return sets;
+    }
+
+    // ---------- VIEW SWITCHING ----------
+    function showNameView() {
+      nameView.classList.remove("hidden");
+      setSelectView.classList.add("hidden");
+      setDetailView.classList.add("hidden");
+      gameView.classList.add("hidden");
+      playerBar.classList.add("hidden");
+      playerNameInput.focus();
+    }
+
+    function showSetOverview() {
+      nameView.classList.add("hidden");
+      setDetailView.classList.add("hidden");
+      gameView.classList.add("hidden");
+      setSelectView.classList.remove("hidden");
+      playerBar.classList.remove("hidden");
+      buildSetOverview();
+    }
+
+    function showSetDetail(setIndex) {
+      currentSetIndex = setIndex;
+      currentPageIndex = null;
+
+      setSelectView.classList.add("hidden");
+      gameView.classList.add("hidden");
+      setDetailView.classList.remove("hidden");
+
+      const setNo = setIndex + 1;
+      const playerName = loadPlayerName() || "-";
+      const totalScore = getSetTotalScore(setIndex);
+      const completedPages = getCompletedPagesCount(setIndex);
+
+      setTitle.textContent = "Set " + setNo;
+      currentSetLabel.textContent =
+        "Player: " + playerName +
+        " · Total score for this set: " + totalScore + " / 20";
+
+      renderPageScoreRow(detailScoreRow, setIndex, null);
+
+      if (completedPages === PAGES_PER_SET &&
+          totalScore === PAGES_PER_SET * QUESTIONS_PER_PAGE) {
+        setMessageBox.textContent =
+          "Success! You got full score on all 5 pages in Set " + setNo + " 🎉";
+      } else if (completedPages > 0) {
+        setMessageBox.textContent =
+          "Nice! You have full score on " + completedPages +
+          " / " + PAGES_PER_SET + " pages. Keep going ✨";
+      } else {
+        setMessageBox.textContent =
+          "Set " + setNo + " not started yet. Try Page 1 first 😊";
+      }
+
+      buildPageGrid(setIndex);
+    }
+
+    function showGamePage(setIndex, pageIndex) {
+      currentSetIndex = setIndex;
+      currentPageIndex = pageIndex;
+
+      setDetailView.classList.add("hidden");
+      gameView.classList.remove("hidden");
+
+      const setNo = setIndex + 1;
+      const pageNo = pageIndex + 1;
+      const playerName = loadPlayerName() || "-";
+
+      gameTitle.textContent = "Set " + setNo + " · Page " + pageNo;
+      currentGameLabel.textContent =
+        "Player: " + playerName + " · 4 questions on this page";
+
+      renderPageScoreRow(gameScoreRow, setIndex, pageIndex);
+      renderQuestionsForPage(setIndex, pageIndex);
+      clearFeedbackOnly();
+    }
+
+    // ---------- RENDER HELPERS ----------
+    function buildSetOverview() {
+      setGrid.innerHTML = "";
+      let playedSets = 0;
+      let successSets = 0;
+
+      for (let s = 0; s < SET_COUNT; s++) {
+        const total = getSetTotalScore(s);
+        const completed = getCompletedPagesCount(s);
+
+        if (total > 0) playedSets++;
+        if (completed === PAGES_PER_SET &&
+            total === PAGES_PER_SET * QUESTIONS_PER_PAGE) {
+          successSets++;
+        }
+
+        const card = document.createElement("div");
+        card.className = "set-card";
+
+        const title = document.createElement("div");
+        title.className = "set-title";
+        title.textContent = "Set " + (s + 1);
+
+        const detail = document.createElement("div");
+        detail.className = "set-detail";
+        detail.textContent =
+          "Pages full score: " + completed + " / " + PAGES_PER_SET +
+          " · Total: " + total + " / 20";
+
+        const status = document.createElement("div");
+        status.className = "set-status";
+
+        if (completed === PAGES_PER_SET &&
+            total === PAGES_PER_SET * QUESTIONS_PER_PAGE) {
+          status.textContent = "✅ Success!";
+          status.classList.add("success");
+        } else if (total > 0) {
+          status.textContent = "⭐ In progress";
+          status.classList.add("in-progress");
+        } else {
+          status.textContent = "Not started";
+          status.classList.add("not-started");
+        }
+
+        card.appendChild(title);
+        card.appendChild(detail);
+        card.appendChild(status);
+
+        card.addEventListener("click", () => showSetDetail(s));
+
+        setGrid.appendChild(card);
+      }
+
+      const name = loadPlayerName() || "-";
+      if (playedSets === 0) {
+        overallSummary.textContent =
+          "Player: " + name +
+          " · No sets played yet. Start with Set 1 ✨";
+      } else {
+        overallSummary.textContent =
+          "Player: " + name +
+          " · Played " + playedSets + " / " + SET_COUNT +
+          " sets · Success in " + successSets + " sets 🎉";
+      }
+    }
+
+    function renderPageScoreRow(container, setIndex, activePageIndex) {
+      container.innerHTML = "";
+      for (let p = 0; p < PAGES_PER_SET; p++) {
+        const box = document.createElement("div");
+        const score = getPageScore(setIndex, p);
+        box.className = "page-score-box";
+        if (p === activePageIndex) {
+          box.classList.add("active");
+        }
+        if (score === QUESTIONS_PER_PAGE) {
+          box.classList.add("fullscore");
+        }
+        box.textContent = "P" + (p + 1) + ": " + score + "/4";
+        container.appendChild(box);
+      }
+    }
+
+    function buildPageGrid(setIndex) {
+      pageGrid.innerHTML = "";
+      for (let p = 0; p < PAGES_PER_SET; p++) {
+        const card = document.createElement("div");
+        card.className = "page-card";
+
+        const pageName = document.createElement("div");
+        pageName.className = "page-name";
+        pageName.textContent = "Page " + (p + 1);
+
+        const score = getPageScore(setIndex, p);
+        const info = document.createElement("div");
+        info.className = "page-info-text";
+        info.textContent = "Best score: " + score + " / 4";
+
+        const btn = document.createElement("button");
+        btn.className = "btn-outline page-btn";
+        btn.textContent = score === 4 ? "Replay" : "Play";
+        btn.addEventListener("click", () => showGamePage(setIndex, p));
+
+        card.appendChild(pageName);
+        card.appendChild(info);
+        card.appendChild(btn);
+
+        pageGrid.appendChild(card);
+      }
+    }
+
+    function renderQuestionsForPage(setIndex, pageIndex) {
+      questionGrid.innerHTML = "";
+
+      const all = ALL_SETS[setIndex];
+      const start = pageIndex * QUESTIONS_PER_PAGE;
+      const end = start + QUESTIONS_PER_PAGE;
+
+      for (let i = start; i < end; i++) {
+        const q = all[i];
+
+        const card = document.createElement("div");
+        card.className = "question-card";
+
+        const qNumber = document.createElement("div");
+        qNumber.className = "q-number";
+        qNumber.textContent = "No. " + (i + 1);
+        card.appendChild(qNumber);
+
+        const tens = Math.floor(q.a / 10);
+        const ones = q.a % 10;
+
+        const product = q.product;
+        const h = Math.floor(product / 100);
+        const t = Math.floor((product % 100) / 10);
+        const o = product % 10;
+
+        const vert = document.createElement("div");
+        vert.className = "vert-box";
+
+        // Row 1 (top): blank, [hundreds slot empty], [tens digit], [ones digit]
+        const r1c1 = document.createElement("div");
+        r1c1.className = "cell-blank";
+        vert.appendChild(r1c1);
+
+        const r1c2 = document.createElement("div");
+        r1c2.className = "digit-box";
+        r1c2.textContent = "";
+        vert.appendChild(r1c2);
+
+        const r1c3 = document.createElement("div");
+        r1c3.className = "digit-box";
+        r1c3.textContent = tens;
+        vert.appendChild(r1c3);
+
+        const r1c4 = document.createElement("div");
+        r1c4.className = "digit-box";
+        r1c4.textContent = ones;
+        vert.appendChild(r1c4);
+
+        // Row 2: × sign, blank, blank, multiplier
+        const r2c1 = document.createElement("div");
+        r2c1.className = "x-sign";
+        r2c1.textContent = "×";
+        vert.appendChild(r2c1);
+
+        const r2c2 = document.createElement("div");
+        r2c2.className = "digit-box";
+        r2c2.textContent = "";
+        vert.appendChild(r2c2);
+
+        const r2c3 = document.createElement("div");
+        r2c3.className = "digit-box";
+        r2c3.textContent = "";
+        vert.appendChild(r2c3);
+
+        const r2c4 = document.createElement("div");
+        r2c4.className = "digit-box multiplier";
+        r2c4.textContent = q.b;
+        vert.appendChild(r2c4);
+
+        // Row 3: horizontal line
+        const r3line = document.createElement("div");
+        r3line.className = "hline";
+        vert.appendChild(r3line);
+
+        // Row 4: inputs H T O
+        const r4c1 = document.createElement("div");
+        r4c1.className = "cell-blank";
+        vert.appendChild(r4c1);
+
+        const ansH = document.createElement("input");
+        ansH.type = "number";
+        ansH.inputMode = "numeric";
+        ansH.className = "answer-input";
+        ansH.dataset.correct = h;
+        vert.appendChild(ansH);
+
+        const ansT = document.createElement("input");
+        ansT.type = "number";
+        ansT.inputMode = "numeric";
+        ansT.className = "answer-input";
+        ansT.dataset.correct = t;
+        vert.appendChild(ansT);
+
+        const ansO = document.createElement("input");
+        ansO.type = "number";
+        ansO.inputMode = "numeric";
+        ansO.className = "answer-input";
+        ansO.dataset.correct = o;
+        vert.appendChild(ansO);
+
+        card.appendChild(vert);
+
+        const icon = document.createElement("div");
+        icon.className = "result-icon";
+        icon.textContent = "";
+        card.appendChild(icon);
+
+        questionGrid.appendChild(card);
+      }
+    }
+
+    // ---------- CHECK & CLEAR ----------
+    function checkAnswers() {
+      if (currentSetIndex === null || currentPageIndex === null) return;
+
+      const cards = questionGrid.querySelectorAll(".question-card");
+      let correctPages = 0;
+
+      cards.forEach(card => {
+        const inputs = card.querySelectorAll(".answer-input");
+        let ok = true;
+        inputs.forEach(inp => {
+          const correct = Number(inp.dataset.correct);
+          const valStr = inp.value.trim();
+          // ช่องว่างให้ถือเป็น 0 เพื่อรองรับคำตอบสองหลัก (เช่น 48 → 0 4 8)
+          const val = valStr === "" ? 0 : Number(valStr);
+          if (val !== correct) ok = false;
+        });
+        const icon = card.querySelector(".result-icon");
+        if (ok) {
+          icon.textContent = "✓ Correct";
+          icon.classList.remove("wrong");
+          icon.classList.add("correct");
+        } else {
+          icon.textContent = "✗ Try again";
+          icon.classList.remove("correct");
+          icon.classList.add("wrong");
+        }
+        if (ok) correctPages++;
+      });
+
+      scoreRow.textContent = "Score: " + correctPages + " / 4";
+
+      if (correctPages === 4) {
+        messageBox.textContent = "Perfect! 4/4 on this page 🎉";
+        messageBox.className = "message success";
+      } else if (correctPages >= 2) {
+        messageBox.textContent = "Good job! Check the ✗ marks and fix them 😊";
+        messageBox.className = "message success";
+      } else {
+        messageBox.textContent = "Keep practicing. You can do it 💪";
+        messageBox.className = "message error";
+      }
+
+      // Save best score for this page
+      setPageScore(currentSetIndex, currentPageIndex, correctPages);
+
+      // Update top score bars + set overview
+      renderPageScoreRow(gameScoreRow, currentSetIndex, currentPageIndex);
+      renderPageScoreRow(detailScoreRow, currentSetIndex, null);
+      buildPageGrid(currentSetIndex);
+      buildSetOverview();
+
+      // Update message in set detail if user goes back
+      const totalScore = getSetTotalScore(currentSetIndex);
+      const completedPages = getCompletedPagesCount(currentSetIndex);
+      const setNo = currentSetIndex + 1;
+      if (completedPages === PAGES_PER_SET &&
+          totalScore === PAGES_PER_SET * QUESTIONS_PER_PAGE) {
+        setMessageBox.textContent =
+          "Success! You got full score on all 5 pages in Set " + setNo + " 🎉";
+      } else if (completedPages > 0) {
+        setMessageBox.textContent =
+          "Nice! Full score on " + completedPages +
+          " / " + PAGES_PER_SET + " pages. Keep going ✨";
+      } else {
+        setMessageBox.textContent =
+          "Set " + setNo + " not started yet. Try Page 1 first 😊";
+      }
+    }
+
+    function clearPage() {
+      const inputs = questionGrid.querySelectorAll(".answer-input");
+      inputs.forEach(inp => inp.value = "");
+      const icons = questionGrid.querySelectorAll(".result-icon");
+      icons.forEach(ic => {
+        ic.textContent = "";
+        ic.classList.remove("correct", "wrong");
+      });
+      clearFeedbackOnly();
+    }
+
+    function clearFeedbackOnly() {
+      scoreRow.textContent = "Score: – / 4";
+      messageBox.textContent = "";
+      messageBox.className = "message";
+    }
+
+    function goNextPage() {
+      if (currentSetIndex === null || currentPageIndex === null) return;
+      const nextIndex = currentPageIndex + 1;
+      if (nextIndex < PAGES_PER_SET) {
+        // ไปหน้า Page ถัดไปในเซ็ตเดียวกัน
+        showGamePage(currentSetIndex, nextIndex);
+      } else {
+        // ถ้าอยู่หน้า 5 แล้ว ให้กลับไปหน้า Set Detail ของเซ็ตนั้น
+        showSetDetail(currentSetIndex);
+      }
+    }
+
+    // ---------- EVENT LISTENERS ----------
+    startWithNameBtn.addEventListener("click", () => {
+      const name = (playerNameInput.value || "").trim();
+      if (!name) {
+        alert("Please enter your nickname first.");
+        return;
+      }
+      savePlayerName(name);
+      playerBar.classList.remove("hidden");
+      nameView.classList.add("hidden");
+      showSetOverview();
+    });
+
+    changeNameBtn.addEventListener("click", () => {
+      const current = loadPlayerName() || "";
+      playerNameInput.value = current;
+      showNameView();
+    });
+
+    backToOverviewBtn.addEventListener("click", showSetOverview);
+
+    backToSetBtn.addEventListener("click", () => {
+      showSetDetail(currentSetIndex);
+    });
+
+    checkBtn.addEventListener("click", checkAnswers);
+    clearBtn.addEventListener("click", clearPage);
+    nextPageBtn.addEventListener("click", goNextPage);
+
+    // ---------- INIT ----------
+    (function init() {
+      const savedName = loadPlayerName();
+      if (savedName) {
+        playerNameDisplay.textContent = savedName;
+        playerBar.classList.remove("hidden");
+        showSetOverview();
+      } else {
+        showNameView();
+      }
+    })();
+  </script>
+</body>
+</html>
